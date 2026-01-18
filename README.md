@@ -176,7 +176,7 @@ Net Balance:      ₹0
 
 ---
 
-## 🎁 Bonus: LLM Integration
+## 🎁 LLM Integration
 
 The system includes an LLM parser that converts natural language to rules:
 
@@ -186,9 +186,7 @@ The system includes an LLM parser that converts natural language to rules:
 **Output:** Structured JSON rule with conditions and actions.
 
 Supports:
-- Google Gemini
-- OpenAI GPT
-- Local pattern matching (fallback)
+- Groq API
 
 ---
 
@@ -213,26 +211,6 @@ Supports:
 - [x] Export to JSON
 - [x] LLM parser (bonus)
 - [x] Natural language generation (bonus)
-
----
-
-## What I Would Do Next 🔮
-
-### With More Time
-1. **Database Integration** - Replace in-memory with PostgreSQL + SQLAlchemy async
-2. **Rule Versioning** - Track rule history and allow rollback
-3. **Batch Processing** - Handle bulk reward creation efficiently
-4. **Event Sourcing** - Full event-driven architecture
-5. **UI Polish** - Better node editing, undo/redo, zoom/pan
-6. **Rule Testing** - Sandbox mode to test rules with sample data
-7. **Metrics Dashboard** - Track rule execution stats
-
-### Production Considerations
-- Rate limiting on API
-- Database connection pooling
-- Redis caching for balances
-- Webhook delivery with retries
-- Kubernetes deployment configs
 
 ---
 
