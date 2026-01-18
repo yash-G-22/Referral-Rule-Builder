@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Referral Rule Flow Builder</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <h1>🔗 Referral Rule Builder</h1>
+                <span class="subtitle">Visual Flow Designer</span>
+            </div>
+            <div class="header-right">
+                <button id="btn-clear" class="btn btn-secondary">Clear Canvas</button>
+                <button id="btn-export" class="btn btn-primary">Export JSON</button>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <!-- Sidebar - Node Palette -->
+            <aside class="sidebar">
+                <h3>📦 Components</h3>
+                
+                <div class="palette-section">
+                    <h4>Triggers</h4>
+                    <div class="palette-item" draggable="true" data-node-type="trigger" data-trigger="referral_signup">
+                        <span class="node-icon">🎯</span>
+                        <span>Referral Signup</span>
+                    </div>
+                    <div class="palette-item" draggable="true" data-node-type="trigger" data-trigger="subscription_started">
+                        <span class="node-icon">📝</span>
+                        <span>Subscription Started</span>
+                    </div>
+                    <div class="palette-item" draggable="true" data-node-type="trigger" data-trigger="payment_received">
+                        <span class="node-icon">💰</span>
+                        <span>Payment Received</span>
+                    </div>
+                </div>
+
+                <div class="palette-section">
+                    <h4>Conditions</h4>
+                    <div class="palette-item" draggable="true" data-node-type="condition" data-field="referrer.is_paid_user">
+                        <span class="node-icon">🔷</span>
+                        <span>Is Paid User</span>
+                    </div>
+                    <div class="palette-item" draggable="true" data-node-type="condition" data-field="referred.subscription_plan">
+                        <span class="node-icon">🔷</span>
+                        <span>Subscription Plan</span>
+                    </div>
+                    <div class="palette-item" draggable="true" data-node-type="condition" data-field="referrer.tier">
+                        <span class="node-icon">🔷</span>
+                        <span>User Tier</span>
+                    </div>
+                    <div class="palette-item" draggable="true" data-node-type="condition" data-field="payment.amount">
+                        <span class="node-icon">🔷</span>
+                        <span>Payment Amount</span>
+                    </div>
+                </div>
+
+                <div class="palette-section">
+                    <h4>Actions</h4>
+                    <div class="palette-item" draggable="true" data-node-type="action" data-action="credit_reward">
+                        <span class="node-icon">🎁</span>
+                        <span>Credit Reward</span>
+                    </div>
+                    <div class="palette-item" draggable="true" data-node-type="action" data-action="send_notification">
+                        <span class="node-icon">📧</span>
+                        <span>Send Notification</span>
+                    </div>
+                    <div class="palette-item" draggable="true" data-node-type="action" data-action="update_status">
+                        <span class="node-icon">📋</span>
+                        <span>Update Status</span>
+                    </div>
+                </div>
+
+                <div class="palette-section">
+                    <h4>Logic</h4>
+                    <div class="palette-item" draggable="true" data-node-type="logic" data-logic="AND">
+                        <span class="node-icon">➕</span>
+                        <span>AND Gate</span>
+                    </div>
+                    <div class="palette-item" draggable="true" data-node-type="logic" data-logic="OR">
+                        <span class="node-icon">⚡</span>
+                        <span>OR Gate</span>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Canvas -->
+            <main class="canvas-container">
+                <div id="canvas" class="canvas">
+                    <svg id="connections" class="connections-layer"></svg>
+                    <div id="nodes-layer" class="nodes-layer"></div>
+                    
+                    <!-- Instructions overlay -->
+                    <div id="instructions" class="instructions">
+                        <h2>Getting Started</h2>
+                        <p>Drag components from the left sidebar onto the canvas</p>
+                        <ol>
+                            <li>Start with a <strong>Trigger</strong> (e.g., Referral Signup)</li>
+                            <li>Add <strong>Conditions</strong> (e.g., Is Paid User)</li>
+                            <li>Use <strong>Logic Gates</strong> to combine conditions</li>
+                            <li>End with <strong>Actions</strong> (e.g., Credit Reward)</li>
+                            <li>Click outputs/inputs to create connections</li>
+                        </ol>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Right Panel - Properties -->
+            <aside class="properties-panel" id="properties-panel">
+                <h3>📝 Properties</h3>
+                <div id="properties-content" class="properties-content">
+                    <p class="hint">Select a node to edit its properties</p>
+                </div>
+            </aside>
+        </div>
+
+        <!-- AI Parser Section -->
+        <div class="ai-section">
+            <h3>🤖 AI Rule Generator</h3>
+            <div class="ai-input-container">
+                <textarea id="ai-input" placeholder="Describe your rule in natural language... e.g., 'When a paid user refers someone who subscribes to premium, reward 500 rupees'"></textarea>
+                <button id="btn-generate" class="btn btn-accent">Generate Rule</button>
+            </div>
+        </div>
+
+        <!-- Export Modal -->
+        <div id="export-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Export Rule JSON</h3>
+                    <button id="modal-close" class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <pre id="export-json"></pre>
+                </div>
+                <div class="modal-footer">
+                    <button id="btn-copy" class="btn btn-primary">Copy to Clipboard</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="flow-builder.js"></script>
+</body>
+</html>

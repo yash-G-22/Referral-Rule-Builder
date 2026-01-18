@@ -1,0 +1,172 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Referral Rule Schema",
+    "description": "JSON Schema for defining referral rules with conditions and actions",
+    "definitions": {
+        "conditionOperator": {
+            "type": "string",
+            "enum": [
+                "equals",
+                "not_equals",
+                "greater_than",
+                "less_than",
+                "greater_than_or_equal",
+                "less_than_or_equal",
+                "contains",
+                "not_contains",
+                "in",
+                "not_in",
+                "is_true",
+                "is_false"
+            ]
+        },
+        "logicalOperator": {
+            "type": "string",
+            "enum": [
+                "AND",
+                "OR"
+            ]
+        },
+        "simpleCondition": {
+            "type": "object",
+            "properties": {
+                "field": {
+                    "type": "string",
+                    "description": "Field path to evaluate, e.g., 'referrer.is_paid_user'"
+                },
+                "operator": {
+                    "$ref": "#/definitions/conditionOperator"
+                },
+                "value": {
+                    "description": "Value to compare against"
+                }
+            },
+            "required": [
+                "field",
+                "operator"
+            ]
+        },
+        "conditionGroup": {
+            "type": "object",
+            "properties": {
+                "operator": {
+                    "$ref": "#/definitions/logicalOperator"
+                },
+                "conditions": {
+                    "type": "array",
+                    "items": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/definitions/simpleCondition"
+                            },
+                            {
+                                "$ref": "#/definitions/conditionGroup"
+                            }
+                        ]
+                    },
+                    "minItems": 1
+                }
+            },
+            "required": [
+                "operator",
+                "conditions"
+            ]
+        },
+        "actionType": {
+            "type": "string",
+            "enum": [
+                "credit_reward",
+                "send_notification",
+                "update_status",
+                "trigger_webhook"
+            ]
+        },
+        "action": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "$ref": "#/definitions/actionType"
+                },
+                "params": {
+                    "type": "object",
+                    "description": "Action-specific parameters"
+                }
+            },
+            "required": [
+                "type",
+                "params"
+            ]
+        }
+    },
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "string",
+            "description": "Unique identifier for the rule"
+        },
+        "name": {
+            "type": "string",
+            "description": "Human-readable name for the rule"
+        },
+        "description": {
+            "type": "string",
+            "description": "Detailed description of what the rule does"
+        },
+        "version": {
+            "type": "integer",
+            "description": "Version number for rule tracking",
+            "default": 1
+        },
+        "is_active": {
+            "type": "boolean",
+            "description": "Whether the rule is currently active",
+            "default": true
+        },
+        "priority": {
+            "type": "integer",
+            "description": "Execution priority (higher = first)",
+            "default": 0
+        },
+        "trigger": {
+            "type": "string",
+            "enum": [
+                "referral_signup",
+                "subscription_started",
+                "subscription_cancelled",
+                "payment_received",
+                "manual"
+            ],
+            "description": "Event that triggers this rule"
+        },
+        "conditions": {
+            "oneOf": [
+                {
+                    "$ref": "#/definitions/simpleCondition"
+                },
+                {
+                    "$ref": "#/definitions/conditionGroup"
+                }
+            ],
+            "description": "Conditions that must be met for actions to execute"
+        },
+        "actions": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/action"
+            },
+            "minItems": 1,
+            "description": "Actions to execute when conditions are met"
+        },
+        "metadata": {
+            "type": "object",
+            "description": "Additional metadata for the rule"
+        }
+    },
+    "required": [
+        "id",
+        "name",
+        "trigger",
+        "conditions",
+        "actions"
+    ]
+}
