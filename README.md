@@ -209,8 +209,28 @@ Supports:
 - [x] Drag-and-drop nodes
 - [x] Node connections
 - [x] Export to JSON
-- [x] LLM parser (bonus)
-- [x] Natural language generation (bonus)
+- [x] LLM parser
+- [x] Natural language generation 
+
+---
+
+## What I Would Do Next 🔮
+
+### With More Time
+1. **Database Integration** - Replace in-memory with PostgreSQL + SQLAlchemy async
+2. **Rule Versioning** - Track rule history and allow rollback
+3. **Batch Processing** - Handle bulk reward creation efficiently
+4. **Event Sourcing** - Full event-driven architecture
+5. **UI Polish** - Better node editing, undo/redo, zoom/pan
+6. **Rule Testing** - Sandbox mode to test rules with sample data
+7. **Metrics Dashboard** - Track rule execution stats
+
+### Production Considerations
+- Rate limiting on API
+- Database connection pooling
+- Redis caching for balances
+- Webhook delivery with retries
+- Kubernetes deployment configs
 
 ---
 
